@@ -1,10 +1,18 @@
+import axios from 'axios';
 import * as React from 'react';
-// import Seo from '@/components/Seo';
 import { TbSend } from 'react-icons/tb';
 
 import Layout from '@/components/layout/Layout';
 
 export default function HomePage() {
+  const sendPromt = async (promt: string) => {
+    // use axios to send promt to backend
+    const res = await axios.post('http://8760-34-126-127-15.ngrok.io/', {
+      promt,
+    });
+    console.log(res);
+    return res.data;
+  };
   const [conversation, setConversation] = React.useState<string[]>([]);
   return (
     <Layout>
@@ -37,6 +45,9 @@ export default function HomePage() {
               onSubmit={(e: any) => {
                 e.preventDefault();
                 setConversation([...conversation, e.target.promt.value]);
+                sendPromt(e.target.promt.value).then((res) => {
+                  setConversation([...conversation, res]);
+                });
               }}
             >
               <div className='absolute bottom-0 right-0 w-full bg-[#2d3036] px-4 py-10'>
