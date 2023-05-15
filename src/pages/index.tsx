@@ -26,7 +26,7 @@ export default function HomePage() {
                 <div
                   key={index}
                   className={`${
-                    index % 2 === 0 ? 'justify-start' : 'justify-end'
+                    index % 2 === 0 ? 'justify-end' : 'justify-start'
                   } flex`}
                 >
                   <div
