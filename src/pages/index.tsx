@@ -1,3 +1,4 @@
+import { useRequest } from 'ahooks';
 import axios from 'axios';
 import * as React from 'react';
 import { TbSend } from 'react-icons/tb';
@@ -12,13 +13,22 @@ export default function HomePage() {
     });
     return res.data;
   };
+
+  const sendAPI = useRequest(sendPromt, {
+    manual: true,
+    onSuccess: (data) => {
+      const n = [...conversation, data.predictedSalary];
+      setConversation(n);
+    },
+  });
+
   const [conversation, setConversation] = React.useState<string[]>([]);
   return (
     <Layout>
       <main className='h-screen'>
         <div className='flex min-h-screen bg-[#444654]'>
           <div className=' flex h-screen w-[300px] flex-col bg-[#202123] p-4 text-white'>
-            SalaryGPT
+            <h1 className='text-xl font-semibold'>SalaryGPT</h1>
           </div>
           <div className='relative flex w-full flex-col'>
             <div className='flex h-[80vh] flex-col overflow-y-auto px-4'>
@@ -38,6 +48,10 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
+
+              {sendAPI.loading && (
+                <div className='w-48 animate-pulse rounded-md bg-[#56596b] px-4 py-5' />
+              )}
             </div>
             <form
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,10 +59,7 @@ export default function HomePage() {
                 e.preventDefault();
                 const newCon = [...conversation, e.target.promt.value];
                 setConversation(newCon);
-                sendPromt(e.target.promt.value).then((res) => {
-                  const n = [...newCon, res.predictedSalary];
-                  setConversation(n);
-                });
+                sendAPI.run(e.target.promt.value);
               }}
             >
               <div className='absolute bottom-0 right-0 w-full bg-[#2d3036] px-4 py-10'>
@@ -56,7 +67,11 @@ export default function HomePage() {
                   className=' relative w-full rounded-md bg-[#40414f] px-4 py-3 text-white'
                   name='promt'
                 />
-                <button className='absolute right-6 top-10 p-3' type='submit'>
+                <button
+                  className='absolute right-6 top-10 p-3'
+                  type='submit'
+                  disabled={sendAPI.loading}
+                >
                   <TbSend size={24} className='text-[#d9d9e3]' />
                 </button>
               </div>
