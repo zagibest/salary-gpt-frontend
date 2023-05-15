@@ -7,10 +7,9 @@ import Layout from '@/components/layout/Layout';
 export default function HomePage() {
   const sendPromt = async (promt: string) => {
     // use axios to send promt to backend
-    const res = await axios.post('http://8760-34-126-127-15.ngrok.io/', {
+    const res = await axios.post('https://salary-gpt-back.vercel.app/predict', {
       promt,
     });
-    console.log(res);
     return res.data;
   };
   const [conversation, setConversation] = React.useState<string[]>([]);
