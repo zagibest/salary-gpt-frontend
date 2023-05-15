@@ -15,7 +15,7 @@ const ChatGPTUI: React.FC = () => {
       setMessages([...messages, { content: inputValue, sender: 'user' }]);
       // Call your ChatGPT API here and handle the response
       // For this example, let's assume the response is stored in `response`
-      const response = ''; // Replace with your ChatGPT response
+      const response = '';
       setMessages([...messages, { content: response, sender: 'bot' }]);
       setInputValue('');
     }

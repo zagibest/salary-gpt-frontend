@@ -31,7 +31,7 @@ export default function HomePage() {
                 >
                   <div
                     className={`${
-                      index % 2 === 0 ? 'bg-[#2d3036]' : 'bg-[#444654]'
+                      index % 2 === 0 ? 'bg-[#2d3036]' : 'bg-[#56596b]'
                     } my-2 rounded-md px-4 py-3 text-white`}
                   >
                     {item}
@@ -43,9 +43,11 @@ export default function HomePage() {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onSubmit={(e: any) => {
                 e.preventDefault();
-                setConversation([...conversation, e.target.promt.value]);
+                const newCon = [...conversation, e.target.promt.value];
+                setConversation(newCon);
                 sendPromt(e.target.promt.value).then((res) => {
-                  setConversation([...conversation, res]);
+                  const n = [...newCon, res.predictedSalary];
+                  setConversation(n);
                 });
               }}
             >
